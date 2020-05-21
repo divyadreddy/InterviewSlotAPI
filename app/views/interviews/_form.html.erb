@@ -15,10 +15,13 @@
     <%= form.label :title %>
     <%= form.text_field :title %>
   </div>
-
   <div class="field">
-    <%= form.label :participants_email %>
-    <%= form.input_field :participants_email multiple: true %>
+    <%= form.label :interviewer_id %>
+    <%= form.number_field :interviewer_id%>
+  </div>
+  <div class="field">
+    <%= form.label :interviewee_id %>
+    <%= form.number_field :interviewee_id%>
   </div>
 
   <div class="field">

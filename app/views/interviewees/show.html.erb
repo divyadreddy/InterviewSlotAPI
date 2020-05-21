@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @interviewee.email %>
+<%# <%= image_tag(@interviewee.resume.image_url) %> %>
+  <%# <iframe src=<%= @interviewee.resume %> > 
+  <%# </iframe> %> %>
+</p>
+
+<%= link_to 'Edit', edit_interviewee_path(@interviewee) %> |
+<%= link_to 'Back', interviewees_path %>

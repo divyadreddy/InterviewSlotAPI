@@ -5,11 +5,13 @@
   <%= @interview.title %>
 </p>
 
-<p>
+<%# <p>
   <strong>Participants email:</strong>
   <%= @interview.participants_email %>
-</p>
-
+<%# </p> %> %>
+<p>
+<%= @interview.interviewer_id %></p>
+        <p><%= @interview.interviewee_id %></p>
 <p>
   <strong>Start time:</strong>
   <%= @interview.start_time %>

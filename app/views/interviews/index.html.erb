@@ -2,11 +2,22 @@
 
 <h1>Interviews</h1>
 
+<%# <%= week_calendar  events: @interviews do |date, interviews| %>
+<%= month_calendar events: @interviews do |date, interviews| %> 
+  <%= date %>
+
+  <% interviews.each do |interview| %>
+    <div>
+      <%=  link_to interview.title, interview %>
+    </div>
+  <% end %>
+<% end %>
 <table>
   <thead>
     <tr>
       <th>Title</th>
-      <th>Participants email</th>
+      <th>Interviewer id </th>
+      <th>Interviewee id </th>
       <th>Start time</th>
       <th>End time</th>
       <th colspan="3"></th>
@@ -17,7 +28,8 @@
     <% @interviews.each do |interview| %>
       <tr>
         <td><%= interview.title %></td>
-        <td><%= interview.participants_email %></td>
+        <td><%= interview.interviewer_id %></td>
+        <td><%= interview.interviewee_id %></td>
         <td><%= interview.start_time %></td>
         <td><%= interview.end_time %></td>
         <td><%= link_to 'Show', interview %></td>
