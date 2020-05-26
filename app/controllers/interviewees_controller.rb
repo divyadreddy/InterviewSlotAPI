@@ -5,6 +5,7 @@ class IntervieweesController < ApplicationController
   # GET /interviewees.json
   def index
     @interviewees = Interviewee.all
+    
   end
 
   # GET /interviewees/1

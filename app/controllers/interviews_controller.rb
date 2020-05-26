@@ -41,7 +41,11 @@ class InterviewsController < ApplicationController
       end
     elsif result==false
       respond_to do |format|
-        @interview.errors.add(message: reason.to_s) 
+        if(reason=="Interviewer")
+          @interview.errors.add(:participant, message: "Interviewer is Unavailable")
+        else   
+            @interview.errors.add(:participant, message: "Interviewee is Unavailable")  
+        end
         format.html {  render :new }
         format.json { render json: @interview.errors, status: :unprocessable_entity }
       end
@@ -51,10 +55,15 @@ class InterviewsController < ApplicationController
   # PATCH/PUT /interviews/1
   # PATCH/PUT /interviews/1.json
   def update
+    logger.info("update")
+    logger.info(params)
+    logger.info("update")
     interviewer_id = params[:interview][:interviewer_id]
     interviewee_id = params[:interview][:interviewee_id]
     start_time, end_time = time_conversion(params)
     result, reason = Interview.participants_available(start_time, end_time, interviewer_id, interviewee_id)
+    logger.info(result)
+    logger.info( reason)
     if(result == true)
       respond_to do |format|
         if @interview.update(interview_params)
@@ -68,7 +77,11 @@ class InterviewsController < ApplicationController
     elsif result==false
       logger.info reason
       respond_to do |format|
-        @interview.errors.add(message: reason.to_s) 
+        if(reason=="Interviewer")
+          @interview.errors.add(:participant, message: "Interviewer is Unavailable")
+        else   
+            @interview.errors.add(:participant, message: "Interviewee is Unavailable")  
+        end
         format.html { render :edit }
         format.json { render json: @interview.errors, status: :unprocessable_entity }
       end
@@ -78,6 +91,7 @@ class InterviewsController < ApplicationController
   # DELETE /interviews/1
   # DELETE /interviews/1.json
   def destroy
+    @interview = Interview.find(params[:id])
     @interview.destroy
     respond_to do |format|
       format.html { redirect_to interviews_url, notice: 'Interview was successfully destroyed.' }
@@ -97,16 +111,31 @@ class InterviewsController < ApplicationController
     end
 
     def time_conversion(params)
-      start = DateTime.new(params[:interview]["start_time(1i)"].to_i, 
-      params[:interview]["start_time(2i)"].to_i,
-      params[:interview]["start_time(3i)"].to_i,
-      params[:interview]["start_time(4i)"].to_i,
-      params[:interview]["start_time(5i)"].to_i)
-      close = DateTime.new(params[:interview]["end_time(1i)"].to_i, 
-      params[:interview]["end_time(2i)"].to_i,
-      params[:interview]["end_time(3i)"].to_i,
-      params[:interview]["end_time(4i)"].to_i,
-      params[:interview]["end_time(5i)"].to_i)
+      start = 0
+      close = 0
+      if(params[:interview]["start_time(1i)"])
+          start = DateTime.new(params[:interview]["start_time(1i)"].to_i, 
+          params[:interview]["start_time(2i)"].to_i,
+          params[:interview]["start_time(3i)"].to_i,
+          params[:interview]["start_time(4i)"].to_i,
+          params[:interview]["start_time(5i)"].to_i)
+          close = DateTime.new(params[:interview]["end_time(1i)"].to_i, 
+          params[:interview]["end_time(2i)"].to_i,
+          params[:interview]["end_time(3i)"].to_i,
+          params[:interview]["end_time(4i)"].to_i,
+          params[:interview]["end_time(5i)"].to_i)
+          logger.info("date time")
+      logger.info(start)
+      logger.info(close)
       return start, close
+      else
+        logger.info("date")
+        start = params[:interview][:start_time].to_datetime
+        close = params[:interview][:end_time].to_datetime
+        logger.info("date time")
+      logger.info(start)
+      logger.info(close)
+      return start, close
+      end
     end
 end

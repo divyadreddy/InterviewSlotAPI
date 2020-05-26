@@ -6,10 +6,12 @@ class Interview < ApplicationRecord
    def self.participants_available(start_time, end_time, interviewer_id, interviewee_id)
     time_clash = Interview.where("(end_time BETWEEN ? AND ?) or (start_time BETWEEN ? AND ?) or ((end_time > ?) and (start_time < ?))", start_time, end_time, start_time, end_time, end_time, start_time)
     if time_clash.where("interviewer_id = ?", interviewer_id).exists?
-      return false, "Interviewer " + Interviewer.find(interviewer_id).email.to_s + " is not available"
+     #  return false, "Interviewer " + Interviewer.find(interviewer_id).email.to_s + " is not available"
+      return false, "Interviewer"
     end
     if time_clash.where("interviewee_id = ?", interviewee_id).exists?
-      return false, "Interviewee with " + Interviewee.find(interviewee_id).email.to_s + " is not available"
+     #  return false, "Interviewee with " + Interviewee.find(interviewee_id).email.to_s + " is not available"
+      return false, "Interviewee"
     end
     return true
   end
